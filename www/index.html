@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Blockbast - Modern Block Breaker</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <div class="loading-screen" id="loadingScreen">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Loading Game...</div>
+        </div>
+        <div class="menu-screen" id="menuScreen">
+            <div class="logo">BLOCK BREAKER</div>
+            <div class="credit">Dibuat oleh Frenli Woran</div>
+            <button type="button" class="btn btn-primary" id="arcadeModeBtn">
+                <span>🏆 Arcade Mode</span>
+            </button>
+            <button type="button" class="btn btn-secondary" id="levelSelectBtn">
+                <span>📶 Pilih Level</span>
+            </button>
+            <button type="button" class="btn btn-secondary" id="highScoreBtn">
+                <span>🏅 Papan Skor</span>
+            </button>
+            <button type="button" class="btn btn-secondary" id="infoBtn">
+                <span>ℹ️  Penjelelasan</span>
+            </button>
+            <button type="button" class="btn btn-secondary" id="settingsBtn">
+                <span>⚙️ Pengaturan</span>
+            </button>
+        </div>
+        <div class="level-select-screen" id="levelSelectScreen">
+            <div class="settings-header">
+                <div class="settings-title">Pilih Level</div>
+                <button type="button" class="back-btn" id="backFromLevelSelect">
+                    <span>Kembali</span>
+                </button>
+            </div>
+            <div class="levels-container" id="levelsContainer"></div>
+        </div>
+        <div class="info-screen" id="infoScreen">
+            <div class="settings-header">
+                <div class="settings-title">Cara Bermain</div>
+                <button type="button" class="back-btn" id="backFromInfo">
+                    <span>Kembali</span>
+                </button>
+            </div>
+            <div class="info-content">
+                <p>Hancurkan semua blok untuk naik level</p>
+                <div class="info-item">
+                    <div class="info-color" style="background: #667eea;"></div>
+                    <div>Paddel dengan cara Usap layar untuk menggerakkan</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-color" style="background: #ffffff;"></div>
+                    <div>Bola penghancur blok</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-color" style="background: #555555;"></div>
+                    <div>Blok yang tidak akan hancur</div>
+                </div>
+                <h3>Kekuatan:</h3>
+                <div class="info-item">
+                    <div class="info-color" style="background: #a78bfa;"></div>
+                    <div>Menambah bola menjadi 2</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-color" style="background: #f87171;"></div>
+                    <div>Bola Api menhancurkan blok dalam satu serangan</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-color" style="background: #4ade80;"></div>
+                    <div>Bola bertambah 1</div>
+                </div>
+            </div>
+        </div>
+        <div class="settings-screen" id="settingsScreen">
+            <div class="settings-header">
+                <div class="settings-title">Pengaturan</div>
+                <button type="button" class="back-btn" id="backFromSettings">
+                    <span>Kembali</span>
+                </button>
+            </div>
+            <div class="setting-item">
+                <div class="setting-label">Mode Gelap</div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="themeToggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="setting-item">
+                <div class="setting-label">Efek Suara(belum diatur)</div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="soundToggle" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="setting-item">
+                <div class="setting-label">Getaran(belum diatur)</div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="vibrationToggle" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+        <div class="high-score-screen" id="highScoreScreen">
+            <div class="settings-header">
+                <div class="settings-title">Papan skor</div>
+                <button type="button" class="back-btn" id="backFromHighScore">
+                    <span>Kembali</span>
+                </button>
+            </div>
+            <div class="score-tabs">
+                <button type="button" class="score-tab active" data-mode="arcade">Arcade</button>
+                <button type="button" class="score-tab" data-mode="challenge">Challenge</button>
+            </div>
+            <div id="scoresList"></div>
+        </div>
+        <div class="game-container" id="gameContainer">
+           <div class="ui-header" id="uiHeader">
+                <button type="button" class="menu-btn" id="menuBtn">☰</button>
+                <div class="score-info" id="scoreContainer">Score: <span id="score">0</span></div>
+                <div class="level-info">Level: <span id="level">1</span></div>
+            </div>
+            <canvas id="gameCanvas" width="480" height="800"></canvas>
+            <div class="touch-control-area" id="touchControl"></div>
+        </div>
+        <div class="game-overlay" id="gameOverlay">
+            <div class="overlay-content" id="overlayContent">
+                <h2 class="overlay-title" id="overlayTitle">Game Over</h2>
+                <p class="overlay-subtitle" id="overlaySubtitle">Your score: 0</p>
+                <div id="nameInputContainer" style="display: none; width: 100%; margin-bottom: 15px;">
+                    <input type="text" id="playerNameInput" placeholder="Enter your name" maxlength="10" 
+                           style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #667eea;">
+                </div>
+                <div class="overlay-buttons" id="overlayButtons">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
