@@ -11,16 +11,21 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - run: npm ci > /dev/null 2>&1
-      - run: echo "Nothing to build, using www/ directly"
+      - run: npm ci
+      - run: npm run build
       - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '21'
       - uses: android-actions/setup-android@v3
       - run: npx cap sync android
-      - run: cd android && ./gradlew assembleRelease
+      - run: |
+          cd android
+          ./gradlew assembleRelease || ./gradlew bundleRelease
+          ls app/build/outputs/apk/release/ || ls app/build/outputs/bundle/release/
       - uses: actions/upload-artifact@v4
         with:
-          name: app-release.apk
-          path: android/app/build/outputs/apk/release/app-release.apk
+          name: app-release
+          path: |
+            android/app/build/outputs/apk/release/*.apk
+            android/app/build/outputs/bundle/release/*.aab
